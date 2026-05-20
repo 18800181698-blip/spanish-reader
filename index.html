@@ -1,0 +1,531 @@
+cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiLector · 每日西语阅读</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#F7F3EE;--primary:#C0392B;--gold:#C8860A;--navy:#1B2A4A;--teal:#2E86AB;--text:#1A1A2E;--muted:#6B7280;--border:#E8DDD0}
+body{background:var(--bg);font-family:system-ui,-apple-system,sans-serif;color:var(--text);max-width:860px;margin:0 auto;min-height:100vh}
+.hdr{background:linear-gradient(135deg,#1B2A4A,#2C3E6B,#1B2A4A);padding:20px 16px 16px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(200,134,10,.13);border-radius:50%}
+.hi{position:relative;z-index:1}
+.ht{display:flex;justify-content:space-between;align-items:flex-start}
+.bf{font-size:24px;margin-bottom:3px}
+.bt{font-size:22px;font-weight:900;color:#fff;line-height:1.15}
+.bs{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;font-weight:600}
+.rbtn{background:rgba(200,134,10,.2);border:1.5px solid rgba(200,134,10,.5);color:#F1C40F;padding:7px 13px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit}
+.ds{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.bdg{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:800}
+.bg{background:var(--gold);color:#fff}
+.bgh{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.2)}
+.tabs{display:flex;background:#fff;border-bottom:2px solid var(--border);padding:0 14px}
+.tab{padding:13px 15px;font-size:13px;font-weight:800;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;font-family:inherit}
+.tab.on{color:var(--primary);border-bottom-color:var(--primary)}
+.cats{display:flex;gap:7px;padding:11px 14px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--border);scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{white-space:nowrap;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;border:2px solid var(--border);background:var(--bg);color:var(--muted);font-family:inherit;transition:all .2s}
+.cat.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.list{padding:14px;display:flex;flex-direction:column;gap:12px}
+.acard{background:#fff;border-radius:15px;padding:16px;cursor:pointer;border:2px solid var(--border);transition:all .2s;box-shadow:0 3px 14px rgba(192,57,43,.07)}
+.acard:hover{transform:translateY(-2px);border-color:#C0392B55;box-shadow:0 7px 24px rgba(192,57,43,.14)}
+.acard-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.ctag{display:inline-block;padding:3px 10px;border-radius:9px;font-size:11px;font-weight:800;color:#fff}
+.ltag{font-size:11px;font-weight:800;color:#fff;background:var(--navy);padding:3px 9px;border-radius:8px}
+.acard h3{font-size:15px;font-weight:800;line-height:1.35;margin-bottom:3px}
+.acard .sub{font-size:12px;color:var(--muted);font-weight:600}
+.acard .src{font-size:11px;color:var(--teal);font-weight:700;margin-top:5px}
+.acard .prev{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rhd{background:#fff;padding:14px 15px;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10}
+.back{display:flex;align-items:center;gap:5px;background:none;border:none;color:var(--primary);font-size:13px;font-weight:800;cursor:pointer;margin-bottom:9px;font-family:inherit}
+.rhd h2{font-size:19px;font-weight:900;line-height:1.3}
+.rhd .sub2{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px}
+.rhd .srctag{font-size:11px;color:var(--teal);font-weight:700;margin-top:4px}
+.ctrls{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.ctrl{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;border:2px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;transition:all .2s}
+.ctrl.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.hint{font-size:11px;color:var(--muted);text-align:center;padding:8px 14px 2px;font-weight:600}
+.sentences{padding:13px;display:flex;flex-direction:column;gap:12px}
+.sblock{background:#fff;border-radius:13px;padding:14px;border:2px solid var(--border)}
+.snum{font-size:10px;font-weight:900;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.est{font-size:15px;font-weight:600;line-height:1.85;color:var(--text);user-select:none;cursor:default}
+.word{cursor:pointer;border-radius:3px;padding:0 2px;transition:background .12s;display:inline}
+.word:hover{background:#FFF3E0;color:var(--primary)}
+.word.pressing{background:#FDEBD0;color:var(--primary)}
+.zht{font-size:13px;color:var(--teal);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);line-height:1.65;font-weight:600}
+.pats{margin:0 13px 22px;background:linear-gradient(135deg,#EEF2FF,#E0F2FE);border-radius:15px;padding:16px;border:2px solid #C7D2FE}
+.pt{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:12px}
+.pi{margin-bottom:15px}
+.pi:last-child{margin-bottom:0}
+.ps{font-size:13px;font-weight:700;color:#1E40AF;background:rgba(255,255,255,.7);padding:8px 12px;border-radius:9px;margin-bottom:7px;border-left:3px solid var(--teal);font-style:italic;line-height:1.55}
+.pa{font-size:12px;color:#374151;line-height:1.78}
+.pf{display:inline-block;background:#F7C948;color:#1A1A2E;padding:3px 10px;border-radius:7px;font-size:11px;font-weight:800;margin-top:5px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.overlay.show{display:flex}
+.popup{background:#fff;width:100%;max-width:620px;border-radius:22px 22px 0 0;padding:20px 18px 34px;animation:slideUp .22s ease-out}
+.drag{width:38px;height:4px;background:var(--border);border-radius:4px;margin:0 auto 16px}
+.pw{font-size:30px;font-weight:900;color:var(--primary)}
+.pty{font-size:12px;color:var(--muted);font-weight:700;margin:3px 0 9px}
+.pm{font-size:20px;font-weight:800;margin-bottom:13px}
+.pctx{background:var(--bg);border-radius:11px;padding:10px 13px;margin-bottom:7px;border-left:3px solid var(--primary)}
+.pctx.alt{border-left-color:var(--teal)}
+.pctx .es{font-size:13px;font-style:italic;font-weight:600;line-height:1.6;color:var(--text)}
+.pctx .zh{font-size:12px;color:var(--muted);margin-top:4px}
+.pacts{display:flex;gap:8px;margin-top:14px}
+.addbtn{flex:1;background:var(--primary);color:#fff;border:none;padding:12px;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.clsbtn{padding:12px 17px;border-radius:12px;border:2px solid var(--border);background:none;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);font-family:inherit}
+.vwrap{padding:14px}
+.vhd{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
+.vcnt{background:var(--primary);color:#fff;padding:4px 11px;border-radius:20px;font-size:12px;font-weight:800}
+.vsrch{width:100%;padding:9px 14px;border-radius:11px;border:2px solid var(--border);font-size:14px;background:#fff;color:var(--text);margin-bottom:12px;outline:none;font-family:inherit}
+.vsrch:focus{border-color:var(--primary)}
+.vcard{background:#fff;border-radius:13px;padding:14px;margin-bottom:9px;border:2px solid var(--border)}
+.vrow{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.vw{font-size:21px;font-weight:900;color:var(--primary)}
+.vt{font-size:11px;color:var(--muted);font-weight:700;background:var(--bg);padding:2px 8px;border-radius:7px;margin-top:3px}
+.vmn{font-size:16px;font-weight:800;margin-bottom:8px}
+.vsnt{background:var(--bg);border-radius:9px;padding:9px 11px;border-left:3px solid var(--gold)}
+.vsnt .es{font-size:12px;font-style:italic;line-height:1.55}
+.vsnt .zh{font-size:12px;color:var(--muted);margin-top:4px}
+.vdt{font-size:10px;color:var(--muted);text-align:right;margin-top:6px;font-weight:700}
+.vdel{background:none;border:none;color:#EF4444;cursor:pointer;font-size:22px;line-height:1;padding:0 4px;flex-shrink:0}
+.empty{text-align:center;padding:55px 18px;color:var(--muted)}
+.eico{font-size:50px;margin-bottom:10px}
+.loading{text-align:center;padding:40px 18px;color:var(--muted)}
+.spin{width:36px;height:36px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1A1A2E;color:#fff;padding:11px 20px;border-radius:22px;font-size:13px;font-weight:800;z-index:200;white-space:nowrap;display:none;box-shadow:0 7px 26px rgba(0,0,0,.28)}
+.news-badge{display:inline-flex;align-items:center;gap:4px;background:#E8F4FD;color:var(--teal);border:1px solid #BEE3F8;padding:3px 9px;border-radius:8px;font-size:11px;font-weight:800;margin-top:6px}
+@keyframes slideUp{from{transform:translateY(28px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hi">
+    <div class="ht">
+      <div>
+        <div class="bf">&#127466;&#127480;</div>
+        <div class="bt">MiLector Español</div>
+        <div class="bs">每日西语精读 · B2-C1 · 实时新闻</div>
+      </div>
+      <button class="rbtn" id="refreshBtn">&#128260; 刷新文章</button>
+    </div>
+    <div class="ds">
+      <span class="bdg bg" id="todayDate">&#128197; ...</span>
+      <span class="bdg bgh">&#127919; B2-C1</span>
+      <span class="bdg bgh" id="articleCountBadge">&#128196; 加载中...</span>
+    </div>
+  </div>
+</div>
+<div class="tabs">
+  <button class="tab on" id="tabRead">&#128218; 阅读</button>
+  <button class="tab" id="tabVocab">&#128214; 词库</button>
+</div>
+<div id="panelRead">
+  <div class="cats">
+    <button class="cat on" data-cat="all">全部</button>
+    <button class="cat" data-cat="story">&#128218; 故事</button>
+    <button class="cat" data-cat="science">&#128300; 科普</button>
+    <button class="cat" data-cat="news">&#127758; 新闻</button>
+    <button class="cat" data-cat="entertainment">&#127881; 娱乐</button>
+    <button class="cat" data-cat="football">&#9917; 足球</button>
+    <button class="cat" data-cat="cinema">&#127916; 电影</button>
+  </div>
+  <div class="list" id="articleList"></div>
+  <div id="articleReader" style="display:none"></div>
+</div>
+<div id="panelVocab" style="display:none">
+  <div class="vwrap">
+    <div class="vhd">
+      <span style="font-weight:800;font-size:16px">我的词库</span>
+      <span class="vcnt" id="vocabCount">0 个单词</span>
+    </div>
+    <input class="vsrch" id="vocabSearch" placeholder="搜索单词或中文...">
+    <div id="vocabList"></div>
+  </div>
+</div>
+<div class="overlay" id="overlay">
+  <div class="popup">
+    <div class="drag"></div>
+    <div id="popupBody"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+// 内置词典 (B2-C1核心词汇)
+// ══════════════════════════════════════════════
+var D={
+"susurrando":{"t":"动词(gerundio)","z":"低语着，悄声说","e":"El viento iba susurrando entre los árboles.","ez":"风在树间低声吹拂着。"},
+"descifrar":{"t":"动词 tr.","z":"解读，破译","e":"Es difícil descifrar su letra.","ez":"他的字迹很难辨认。"},
+"certeza":{"t":"名词 f.","z":"确信，把握","e":"Habló con certeza absoluta.","ez":"他说话充满绝对的把握。"},
+"recelo":{"t":"名词 m.","z":"警惕，戒备，疑心","e":"Le miraba con recelo.","ez":"他用警惕的眼神看着他。"},
+"forastera":{"t":"名词 f.","z":"外乡人，外来者（女）","e":"La forastera llegó sin avisar.","ez":"那个外乡女人没有预告就来了。"},
+"cartógrafo":{"t":"名词 m.","z":"制图师，绘图员","e":"El cartógrafo dibujó el mapa del reino.","ez":"制图师绘制了王国的地图。"},
+"invisible":{"t":"形容词","z":"无形的，不可见的","e":"Las emociones son fuerzas invisibles.","ez":"情感是无形的力量。"},
+"autobiografías":{"t":"名词 f.pl.","z":"自传（复数）","e":"Las autobiografías revelan la vida interior.","ez":"自传揭示了内心世界。"},
+"objetividad":{"t":"名词 f.","z":"客观性","e":"El periodismo debe mantener la objetividad.","ez":"新闻业必须保持客观性。"},
+"paradoja":{"t":"名词 m.","z":"悖论","e":"Es una paradoja interesante.","ez":"这是一个有趣的悖论。"},
+"insomnio":{"t":"名词 m.","z":"失眠","e":"El estrés provoca insomnio.","ez":"压力会导致失眠。"},
+"neurociencia":{"t":"名词 f.","z":"神经科学","e":"La neurociencia estudia el cerebro.","ez":"神经科学研究大脑。"},
+"privación":{"t":"名词 f.","z":"剥夺，缺乏","e":"La privación del sueño es peligrosa.","ez":"睡眠剥夺是危险的。"},
+"irreversible":{"t":"形容词","z":"不可逆的","e":"El daño puede ser irreversible.","ez":"损害可能是不可逆的。"},
+"merma":{"t":"名词 f.","z":"减少，丧失","e":"Hay una merma en la productividad.","ez":"生产力有所下降。"},
+"rendimiento":{"t":"名词 m.","z":"表现，效率，产能","e":"Su rendimiento en el trabajo es excelente.","ez":"他的工作表现非常出色。"},
+"negligencia":{"t":"名词 f.","z":"疏忽，失职","e":"La negligencia médica puede ser fatal.","ez":"医疗疏忽可能是致命的。"},
+"virtud":{"t":"名词 f.","z":"美德，优点","e":"La paciencia es una gran virtud.","ez":"耐心是一种伟大的美德。"},
+"algoritmos":{"t":"名词 m.pl.","z":"算法（复数）","e":"Los algoritmos de IA aprenden solos.","ez":"人工智能算法可以自主学习。"},
+"periodismo":{"t":"名词 m.","z":"新闻业，新闻学","e":"El periodismo independiente es vital.","ez":"独立新闻业至关重要。"},
+"verificación":{"t":"名词 f.","z":"核实，验证","e":"La verificación de hechos es esencial.","ez":"事实核查至关重要。"},
+"contextualización":{"t":"名词 f.","z":"背景化，提供背景","e":"La contextualización es clave en periodismo.","ez":"在新闻业中，提供背景信息是关键。"},
+"conlleva":{"t":"动词 tr.","z":"带来，意味着","e":"El éxito conlleva responsabilidades.","ez":"成功意味着责任。"},
+"sindicatos":{"t":"名词 m.pl.","z":"工会（复数）","e":"Los sindicatos defienden los derechos laborales.","ez":"工会捍卫劳动权利。"},
+"subyace":{"t":"动词 intr.","z":"潜藏于，贯穿于","e":"Un problema más profundo subyace a esta crisis.","ez":"一个更深层的问题潜藏在这场危机之下。"},
+"turismo":{"t":"名词 m.","z":"旅游，旅游业","e":"El turismo genera muchos empleos.","ez":"旅游业创造了许多就业机会。"},
+"fenómeno":{"t":"名词 m.","z":"现象","e":"El cambio climático es un fenómeno global.","ez":"气候变化是一个全球性现象。"},
+"ficción":{"t":"名词 f.","z":"虚构，小说","e":"Le encanta la ciencia ficción.","ez":"他非常喜欢科幻小说。"},
+"peregrinación":{"t":"名词 f.","z":"朝圣，朝圣之旅","e":"La peregrinación a Santiago es famosa.","ez":"前往圣地亚哥的朝圣之路非常著名。"},
+"cartografiar":{"t":"动词 tr.","z":"绘制地图，描绘","e":"Es difícil cartografiar las emociones.","ez":"情感很难被描绘出来。"},
+"colapsar":{"t":"动词 tr.","z":"使崩塌，消弭","e":"Quería colapsar las barreras entre culturas.","ez":"他想消弭文化之间的壁垒。"},
+"lejos":{"t":"副词/介词短语","z":"远；lejos de = 远非，非但没有","e":"Lejos de mejorar, la situación empeoró.","ez":"情况非但没有好转，反而更糟了。"},
+"cabe":{"t":"动词 intr.(caber)","z":"有理由；cabe+inf.=不禁让人……","e":"Cabe destacar su esfuerzo.","ez":"值得指出他的努力。"},
+"contundencia":{"t":"名词 f.","z":"力度，说服力","e":"Argumentó con contundencia.","ez":"他以充分的力度进行了论证。"},
+"desmantelado":{"t":"动词(participio)","z":"打破，拆除","e":"Han desmantelado el viejo sistema.","ez":"他们已经打破了旧体制。"},
+"glorificado":{"t":"动词(participio)","z":"颂扬的，被美化的","e":"El sacrificio fue glorificado en esa cultura.","ez":"在那种文化中，牺牲被颂扬。"},
+"arquitectura":{"t":"名词 f.","z":"建筑；（神经元）结构","e":"La arquitectura neuronal es compleja.","ez":"神经元结构非常复杂。"},
+"deteriora":{"t":"动词 tr.","z":"损害，使恶化","e":"El tabaco deteriora los pulmones.","ez":"烟草损害肺部。"},
+"convencido":{"t":"形容词/participio","z":"确信的，深信的","e":"Estaba convencido de su inocencia.","ez":"他确信自己是无辜的。"},
+"evidencia":{"t":"名词 f.","z":"证据，证明","e":"La evidencia científica es clara.","ez":"科学证据是明确的。"},
+"marcos":{"t":"名词 m.pl.","z":"框架（复数）","e":"Necesitamos marcos regulatorios claros.","ez":"我们需要清晰的监管框架。"},
+"regulatorios":{"t":"形容词 m.pl.","z":"监管的，法规的","e":"Los marcos regulatorios protegen al consumidor.","ez":"监管框架保护消费者。"},
+"etiquetar":{"t":"动词 tr.","z":"标注，贴标签","e":"Es importante etiquetar el contenido falso.","ez":"标注虚假内容很重要。"},
+"velocidad":{"t":"名词 f.","z":"速度","e":"La velocidad del cambio tecnológico es enorme.","ez":"技术变革的速度是惊人的。"},
+"sustituir":{"t":"动词 tr.","z":"取代，替代","e":"Nada puede sustituir a la experiencia.","ez":"没有什么可以取代经验。"},
+"gol":{"t":"名词 m.","z":"进球，得分","e":"Marcó un gol en el último minuto.","ez":"他在最后一分钟进了一球。"},
+"portero":{"t":"名词 m.","z":"门将，守门员","e":"El portero detuvo el penalti.","ez":"门将扑出了点球。"},
+"delantero":{"t":"名词 m.","z":"前锋","e":"El delantero marcó un hat-trick.","ez":"前锋打进了帽子戏法。"},
+"defensa":{"t":"名词 f./m.","z":"防守；后卫","e":"La defensa del equipo fue sólida.","ez":"该队的防守非常稳固。"},
+"temporada":{"t":"名词 f.","z":"赛季，季节","e":"Fue la mejor temporada de su carrera.","ez":"这是他职业生涯中最好的赛季。"},
+"campeón":{"t":"名词 m.","z":"冠军","e":"Se proclamó campeón del mundo.","ez":"他荣登世界冠军。"},
+"partido":{"t":"名词 m.","z":"比赛，场（足球）","e":"El partido terminó en empate.","ez":"比赛以平局结束。"},
+"empate":{"t":"名词 m.","z":"平局，平手","e":"El empate fue inesperado.","ez":"平局出乎意料。"},
+"entrenador":{"t":"名词 m.","z":"教练","e":"El entrenador cambió la táctica.","ez":"教练改变了战术。"},
+"táctica":{"t":"名词 f.","z":"战术","e":"La táctica del equipo fue efectiva.","ez":"该队的战术非常有效。"},
+"lesión":{"t":"名词 f.","z":"受伤，伤病","e":"Sufrió una lesión en la rodilla.","ez":"他膝盖受伤了。"},
+"fichaje":{"t":"名词 m.","z":"转会，签约球员","e":"El fichaje costó 100 millones de euros.","ez":"这次转会花费了1亿欧元。"},
+"aficionados":{"t":"名词 m.pl.","z":"球迷，爱好者","e":"Los aficionados llenaron el estadio.","ez":"球迷们挤满了体育场。"},
+"estadio":{"t":"名词 m.","z":"体育场","e":"El estadio tiene capacidad para 80.000 personas.","ez":"该体育场可容纳8万人。"},
+"película":{"t":"名词 f.","z":"电影，影片","e":"La película ganó el Oscar al mejor director.","ez":"这部电影赢得了最佳导演奖。"},
+"director":{"t":"名词 m.","z":"导演，主任","e":"El director presentó su nueva obra.","ez":"导演展示了他的新作品。"},
+"estreno":{"t":"名词 m.","z":"首映，上映","e":"El estreno fue un gran éxito.","ez":"首映非常成功。"},
+"actuación":{"t":"名词 f.","z":"表演，演出","e":"Su actuación fue brillante.","ez":"他的表演非常精彩。"},
+"taquilla":{"t":"名词 f.","z":"票房，售票处","e":"La película arrasó en taquilla.","ez":"这部电影在票房上大获成功。"},
+"guion":{"t":"名词 m.","z":"剧本","e":"El guion fue premiado en Cannes.","ez":"剧本在戛纳获奖。"},
+"protagonista":{"t":"名词 m./f.","z":"主角，主人公","e":"La protagonista interpretó el papel a la perfección.","ez":"女主角将这个角色诠释得完美无缺。"},
+"banda sonora":{"t":"名词 f.","z":"原声音乐，配乐","e":"La banda sonora ganó un Grammy.","ez":"原声音乐获得了格莱美奖。"},
+"critica":{"t":"名词 f.","z":"评论，批评","e":"La crítica especializada elogió la película.","ez":"专业评论界对这部电影赞不绝口。"},
+"descubrimiento":{"t":"名词 m.","z":"发现，发现物","e":"El descubrimiento cambió la historia de la medicina.","ez":"这一发现改变了医学史。"},
+"investigación":{"t":"名词 f.","z":"研究，调查","e":"La investigación duró diez años.","ez":"这项研究持续了十年。"},
+"científicos":{"t":"名词 m.pl.","z":"科学家们","e":"Los científicos publicaron sus resultados.","ez":"科学家们发表了他们的研究结果。"},
+"experimento":{"t":"名词 m.","z":"实验","e":"El experimento confirmó la hipótesis.","ez":"实验证实了假设。"},
+"hipótesis":{"t":"名词 f.","z":"假设，假说","e":"La hipótesis fue finalmente probada.","ez":"假设最终得到了证实。"},
+"planeta":{"t":"名词 m.","z":"星球，行星","e":"La Tierra es nuestro planeta.","ez":"地球是我们的星球。"},
+"atmósfera":{"t":"名词 f.","z":"大气层，氛围","e":"La atmósfera terrestre nos protege.","ez":"地球大气层保护我们。"},
+"ecosistema":{"t":"名词 m.","z":"生态系统","e":"El ecosistema marino está en peligro.","ez":"海洋生态系统处于危险之中。"},
+"biodiversidad":{"t":"名词 f.","z":"生物多样性","e":"La biodiversidad es vital para la vida.","ez":"生物多样性对生命至关重要。"},
+"calentamiento":{"t":"名词 m.","z":"变暖，升温","e":"El calentamiento global es urgente.","ez":"全球变暖是紧迫问题。"},
+"evolución":{"t":"名词 f.","z":"进化，演变","e":"Darwin explicó la evolución de las especies.","ez":"达尔文解释了物种进化。"},
+"genoma":{"t":"名词 m.","z":"基因组","e":"El genoma humano fue descifrado en 2003.","ez":"人类基因组于2003年被破译。"},
+"neurona":{"t":"名词 f.","z":"神经元","e":"El cerebro tiene millones de neuronas.","ez":"大脑有数百万个神经元。"},
+"sostenible":{"t":"形容词","z":"可持续的","e":"Necesitamos una economía más sostenible.","ez":"我们需要更可持续的经济。"},
+"renovable":{"t":"形容词","z":"可再生的","e":"Las energías renovables son el futuro.","ez":"可再生能源是未来的方向。"},
+"conflicto":{"t":"名词 m.","z":"冲突，纠纷","e":"El conflicto duró varios años.","ez":"冲突持续了几年。"},
+"acuerdo":{"t":"名词 m.","z":"协议，协定","e":"Las dos partes firmaron un acuerdo.","ez":"双方签署了一项协议。"},
+"cumbre":{"t":"名词 f.","z":"峰会，顶峰","e":"Los líderes se reunieron en la cumbre.","ez":"各国领导人在峰会上会面。"},
+"elecciones":{"t":"名词 f.pl.","z":"选举（复数）","e":"Las elecciones se celebrarán en mayo.","ez":"选举将于五月举行。"},
+"democracia":{"t":"名词 f.","z":"民主，民主制度","e":"La democracia requiere ciudadanos informados.","ez":"民主需要有知情的公民。"},
+"crisis":{"t":"名词 f.","z":"危机","e":"La crisis económica afectó a millones.","ez":"经济危机影响了数百万人。"},
+"inflación":{"t":"名词 f.","z":"通货膨胀","e":"La inflación subió un 5% este año.","ez":"今年通货膨胀率上升了5%。"},
+"refugiados":{"t":"名词 m.pl.","z":"难民（复数）","e":"Miles de refugiados cruzaron la frontera.","ez":"数千名难民越过了边境。"},
+"inteligencia artificial":{"t":"名词 f.","z":"人工智能","e":"La inteligencia artificial transforma la industria.","ez":"人工智能正在改变工业。"},
+"tecnología":{"t":"名词 f.","z":"技术，科技","e":"La tecnología avanza a gran velocidad.","ez":"技术以极快的速度发展。"},
+"digitalización":{"t":"名词 f.","z":"数字化","e":"La digitalización cambia todos los sectores.","ez":"数字化正在改变所有行业。"},
+"trayectoria":{"t":"名词 f.","z":"轨迹，职业生涯","e":"Su trayectoria deportiva es admirable.","ez":"他的运动生涯令人钦佩。"},
+"palmarés":{"t":"名词 m.","z":"荣誉榜，成就","e":"Tiene un palmarés impresionante.","ez":"他有令人印象深刻的成就记录。"},
+"récord":{"t":"名词 m.","z":"纪录，记录","e":"Batió el récord mundial.","ez":"他打破了世界纪录。"},
+"derrota":{"t":"名词 f.","z":"失败，败北","e":"La derrota fue dolorosa para el equipo.","ez":"这次失败对球队来说很痛苦。"},
+"victoria":{"t":"名词 f.","z":"胜利","e":"La victoria fue celebrada en todo el país.","ez":"整个国家都在庆祝这次胜利。"},
+"penalti":{"t":"名词 m.","z":"点球，罚球","e":"Marcó el penalti decisivo.","ez":"他踢进了决定性的点球。"},
+"clasificación":{"t":"名词 f.","z":"晋级，分类，排名","e":"El equipo logró la clasificación para la final.","ez":"球队成功晋级决赛。"},
+"protagonismo":{"t":"名词 m.","z":"主角地位，重要性","e":"Asumió el protagonismo en el partido.","ez":"他在比赛中担当了主角。"},
+"presión":{"t":"名词 f.","z":"压力，施压","e":"Jugar bajo presión requiere experiencia.","ez":"在压力下比赛需要经验。"}
+};
+
+function lookupWord(w){
+  var k=w.toLowerCase().trim();
+  if(D[k]) return D[k];
+  // try without accents
+  var na=k.replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n');
+  for(var dk in D){
+    var dna=dk.replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n');
+    if(dna===na) return D[dk];
+  }
+  // stem tries
+  var stems=[k.replace(/aron$/,'ar'),k.replace(/ieron$/,'ir'),k.replace(/aba$/,'ar'),
+    k.replace(/ando$/,'ar'),k.replace(/iendo$/,'er'),k.replace(/ado$/,'ar'),
+    k.replace(/ido$/,'ir'),k.replace(/os$/,'o'),k.replace(/as$/,'a'),k.replace(/es$/,''),k.replace(/s$/,'')];
+  for(var i=0;i<stems.length;i++){
+    if(stems[i]&&stems[i]!==k&&D[stems[i]]) return D[stems[i]];
+  }
+  return null;
+}
+
+// ══════════════════════════════════════════════
+// 文章数据 — 每次更新这里即可
+// ══════════════════════════════════════════════
+var ARTICLES=[
+{id:1,category:"news",level:"B2",catLabel:"新闻",catColor:"#2980B9",source:"BBC Mundo",
+title:"La ONU advierte: el mundo supera 1,5°C de calentamiento global",subtitle:"联合国警告：全球升温突破1.5°C",
+content:[
+{id:"n1s1",es:"Por primera vez en la historia registrada, la temperatura media global ha superado el umbral de 1,5 grados centígrados por encima de los niveles preindustriales durante doce meses consecutivos.",zh:"有记录以来首次，全球平均气温连续十二个月超过工业化前水平1.5摄氏度的门槛。"},
+{id:"n1s2",es:"La Organización Meteorológica Mundial califica este hecho de 'llamada de atención brutal' para los gobiernos que aún no han adoptado medidas climáticas ambiciosas.",zh:"世界气象组织将这一事实称为对尚未采取雄心勃勃气候措施的各国政府发出的"强烈警醒"。"},
+{id:"n1s3",es:"Los científicos subrayan que superar esta barrera no significa que el objetivo del Acuerdo de París esté definitivamente perdido, pero sí que el tiempo para actuar se agota a un ritmo alarmante.",zh:"科学家们强调，突破这一界限并不意味着《巴黎协定》目标已彻底落空，但留给人类行动的时间正在以令人震惊的速度耗尽。"},
+{id:"n1s4",es:"Entre las consecuencias más visibles se encuentran el deshielo acelerado de los glaciares alpinos, el blanqueamiento masivo de arrecifes de coral y la mayor frecuencia de fenómenos meteorológicos extremos.",zh:"最明显的后果包括阿尔卑斯冰川加速融化、珊瑚礁大规模白化，以及极端天气事件频率显著增加。"},
+{id:"n1s5",es:"La cumbre climática del próximo noviembre será, según los expertos, la última oportunidad real para reencauzar las emisiones globales antes de que ciertos efectos se vuelvan irreversibles.",zh:"据专家称，今年11月的气候峰会将是在某些影响变得不可逆之前，重新引导全球排放的最后真正机会。"}
+],
+patterns:[
+{sent:"La Organización Meteorológica Mundial califica este hecho de 'llamada de atención brutal' para los gobiernos",analysis:"【calificar algo de + 名词/形容词】= 将某事称为……，定性为……，是B2-C1新闻语体中常用的评价动词结构。注意介词用 de 而非 como，与 considerar algo como 不同，是易错点。",formula:"calificar + algo + de + 名词 = 将……定性为……"},
+{sent:"el tiempo para actuar se agota a un ritmo alarmante",analysis:"【agotarse】= 耗尽，用尽，是 agotar（消耗）的反身形式，表示自然消耗过程。a un ritmo + 形容词（以……的速度）是描述变化速度的固定搭配，C1写作高频词组。",formula:"agotarse a un ritmo + 形容词 = 以……的速度耗尽"}
+]},
+{id:2,category:"football",level:"B2",catLabel:"足球",catColor:"#27AE60",source:"Marca",
+title:"Mbappé lidera al Real Madrid hacia la final de Champions",subtitle:"姆巴佩带领皇马挺进欧冠决赛",
+content:[
+{id:"f1s1",es:"Kylian Mbappé firmó una actuación estratosférica en el Santiago Bernabéu para impulsar al Real Madrid hacia su decimoséptima final de la Liga de Campeones.",zh:"基利安·姆巴佩在圣地亚哥·伯纳乌球场奉献了一场出神入化的表演，推动皇家马德里挺进第十七次欧冠决赛。"},
+{id:"f1s2",es:"El delantero francés anotó un doblete en la primera mitad y asistió en el tercer gol, demostrando que la Champions League es su competición fetiche.",zh:"这位法国前锋在上半场打进两球并助攻第三球，证明了欧冠联赛就是他的专属舞台。"},
+{id:"f1s3",es:"El entrenador Carlo Ancelotti no escatimó elogios para su estrella: 'Mbappé ha nacido para estas noches. Tiene la mentalidad de los grandes ganadores.'",zh:"主帅卡洛·安切洛蒂对他的明星球员不吝赞美："姆巴佩生来就是为了这样的夜晚。他具备伟大赢家的心态。""},
+{id:"f1s4",es:"El conjunto merengue llega a la gran final después de eliminar sucesivamente a tres favoritos, lo que refuerza la teoría de que el Madrid tiene un gen especial en esta competición.",zh:"皇马在相继淘汰三支夺冠热门之后闯入决赛，这进一步印证了皇马在这项赛事中拥有特殊基因的理论。"},
+{id:"f1s5",es:"La final se disputará en Múnich el próximo 31 de mayo, donde los blancos buscarán su decimoquinta Copa de Europa.",zh:"决赛将于5月31日在慕尼黑举行，皇马将在那里角逐第十五座欧洲杯冠军奖杯。"}
+],
+patterns:[
+{sent:"Mbappé ha nacido para estas noches. Tiene la mentalidad de los grandes ganadores.",analysis:"【nacer para + 名词/inf.】= 天生就是为了……，是表达天赋使命感的固定句型。mentalidad（心态，思维方式）是B2体育和商业语体中高频词，比 actitud 更强调深层思维模式。",formula:"nacer para + 名词 = 天生就是为了……"},
+{sent:"El conjunto merengue llega a la gran final después de eliminar sucesivamente a tres favoritos",analysis:"conjunto merengue 是皇马的别称（merengue = 蛋白糖，指皇马白色球衣）。西班牙体育报道大量使用绰号避免重复，这是C1阅读理解的难点之一。sucesivamente（相继地，依次地）是副词，修饰动词，B2写作常用。",formula:"sucesivamente = 相继地，一个接一个地"}
+]},
+{id:3,category:"science",level:"C1",catLabel:"科普",catColor:"#16A085",source:"National Geographic ES",
+title:"El cerebro humano sigue desarrollándose hasta los 30 años",subtitle:"人类大脑直到30岁才完全发育成熟",
+content:[
+{id:"s1s1",es:"Contrariamente a la creencia popular, la maduración completa del cerebro humano no se produce en la adolescencia, sino que se prolonga hasta bien entrados los treinta años.",zh:"与普遍认知相反，人类大脑的完全成熟并非发生在青春期，而是延续到三十岁出头。"},
+{id:"s1s2",es:"La corteza prefrontal, responsable del control de impulsos, la planificación a largo plazo y el juicio moral, es la última región en alcanzar su desarrollo pleno.",zh:"负责冲动控制、长期规划和道德判断的前额叶皮层，是最后一个达到充分发育的脑区。"},
+{id:"s1s3",es:"Este hallazgo neurológico tiene implicaciones profundas para el sistema judicial, la educación y la política de salud pública, dado que cuestiona la frontera arbitraria de los 18 años como umbral de madurez.",zh:"这一神经学发现对司法体系、教育及公共卫生政策具有深远影响，因为它质疑了将18岁作为成熟门槛这一武断界定。"},
+{id:"s1s4",es:"Las técnicas de neuroimagen han permitido observar cómo la mielinización de las fibras nerviosas, proceso clave para la velocidad de transmisión neuronal, continúa activa hasta la tercera década de vida.",zh:"神经影像技术使科学家得以观察到神经纤维髓鞘化过程——这是决定神经传导速度的关键过程——如何持续活跃至人生第三个十年。"},
+{id:"s1s5",es:"Los investigadores advierten que factores como el estrés crónico, el consumo de sustancias o la privación del sueño durante esta etapa pueden dejar huellas estructurales permanentes en el cerebro en desarrollo.",zh:"研究人员警告称，在这一阶段，长期压力、物质滥用或睡眠剥夺等因素，可能在仍在发育中的大脑上留下永久性结构痕迹。"}
+],
+patterns:[
+{sent:"Contrariamente a la creencia popular, la maduración completa del cerebro humano no se produce en la adolescencia, sino que se prolonga hasta bien entrados los treinta años",analysis:"【contrariamente a + 名词】= 与……相反，是C1学术写作开篇常用的对比引导词，比 a diferencia de 更正式。bien entrados los treinta años 是固定表达，意为'三十好几岁'，bien 在此作强调副词，修饰过去分词 entrados。",formula:"contrariamente a + 名词 = 与……相反，与……截然不同"},
+{sent:"Este hallazgo neurológico tiene implicaciones profundas para el sistema judicial dado que cuestiona la frontera arbitraria de los 18 años",analysis:"tener implicaciones para（对……有影响）是C1学术语体的核心动词短语，比 afectar a 更正式、更书面。dado que（鉴于，由于）引导原因从句，比 porque 语气更正式，常见于学术论文和新闻评论。",formula:"tener implicaciones para = 对……具有深远影响／意义"}
+]},
+{id:4,category:"cinema",level:"B2",catLabel:"电影",catColor:"#8E44AD",source:"Fotogramas",
+title:"Cannes 2026: Pedro Almodóvar recibe la Palma de Oro honorífica",subtitle:"2026年戛纳：阿莫多瓦荣获荣誉金棕榈奖",
+content:[
+{id:"c1s1",es:"El cineasta manchego Pedro Almodóvar recibió anoche la Palma de Oro honorífica del Festival de Cannes entre una ovación de varios minutos de toda la sala.",zh:"昨晚，来自拉曼恰的电影导演佩德罗·阿莫多瓦在全场数分钟的起立鼓掌中，荣获戛纳电影节荣誉金棕榈奖。"},
+{id:"c1s2",es:"El director de Todo sobre mi madre y Volver protagonizó un discurso emocionado en el que reivindicó el cine como 'el arte de la memoria colectiva y el refugio de quienes no tienen voz'.",zh:"这位《关于我母亲的一切》和《回归》的导演发表了一篇动情的演讲，他在演讲中主张，电影是"集体记忆的艺术，也是无声者的庇护所"。"},
+{id:"c1s3",es:"Almodóvar, cuya filmografía abarca más de cuatro décadas, ha sido una figura fundamental en la renovación del cine europeo y en la visibilización de colectivos históricamente marginados.",zh:"阿莫多瓦的电影作品跨越四十余年，是欧洲电影复兴以及历史上被边缘化群体获得可见度的重要推手。"},
+{id:"c1s4",es:"La ceremonia contó con la presencia de cineastas de todo el mundo que rindieron homenaje al español con un vídeo de felicitación que recopiló fragmentos de sus películas más icónicas.",zh:"典礼上，来自世界各地的电影人聚集一堂，以一段汇集了他最具代表性电影片段的祝贺视频向这位西班牙导演致敬。"},
+{id:"c1s5",es:"La Palma honorífica no cierra, sin embargo, la carrera de Almodóvar: el director ha confirmado que ya trabaja en su próximo proyecto, una adaptación de una novela gráfica española.",zh:"然而，这枚荣誉金棕榈并不意味着阿莫多瓦职业生涯的终结：导演已确认正在着手他的下一个项目——改编一部西班牙图画小说。"}
+],
+patterns:[
+{sent:"reivindicó el cine como 'el arte de la memoria colectiva y el refugio de quienes no tienen voz'",analysis:"【reivindicar algo como】= 主张……是，捍卫……的地位，是C1书面语中表达观点立场的高级动词，比 describir 或 llamar 更具力度和情感色彩。quienes no tienen voz（没有发声机会的人）中 quienes 引导名词性定语从句，正式书面语中比 los que 更优雅。",formula:"reivindicar + algo + como = 主张……是，捍卫……的地位"},
+{sent:"cuya filmografía abarca más de cuatro décadas",analysis:"【cuyo/cuya】= 其，…… 的，是表示所有关系的关系形容词，须与所修饰名词的性数保持一致（cuya filmografía：阴性单数）。这是B2-C1写作中避免重复的重要工具，比 el cual tiene 更简洁优雅。abarcar（涵盖，跨越）是表达时间或范围的高频动词。",formula:"cuyo/cuya + 名词 = 其……，……的（所有关系）"}
+]},
+{id:5,category:"story",level:"B2",catLabel:"故事",catColor:"#8E44AD",source:"Literatura Contemporánea",
+title:"El último tren a García Márquez",subtitle:"前往加西亚·马尔克斯的最后一班火车",
+content:[
+{id:"st1s1",es:"El anciano llegó a la estación con veinte años de retraso y la absoluta certeza de que el tren, de algún modo insondable, lo habría esperado.",zh:"那位老人晚了整整二十年才来到车站，却绝对确信，那列火车不知以何种深不可测的方式，一定还在等着他。"},
+{id:"st1s2",es:"Cargaba con una maleta repleta de cartas sin enviar, cada una dirigida a alguien que ya no recordaba haber conocido.",zh:"他携带着一只装满未寄出信件的手提箱，每封信都寄给某个他已不记得曾相识的人。"},
+{id:"st1s3",es:"El jefe de estación, hombre de pocas palabras y muchas sospechas, le informó de que el último tren había partido en 1987 y que desde entonces nadie había vuelto a preguntar por él.",zh:"车站站长是个话少疑心多的人，他告知老人说，最后一班火车已于1987年开走，此后再没有人来打听过它。"},
+{id:"st1s4",es:"El anciano asintió con la serenidad de quien ha llegado, por fin, a un lugar que siempre supo que no existía.",zh:"老人平静地点了点头，那是一种终于抵达某处的安然——那个他早已知晓并不存在的地方。"},
+{id:"st1s5",es:"Dejó la maleta en el andén, se sentó en el banco más alejado, y empezó a escribir la carta que llevaba toda la vida sin saber a quién enviar.",zh:"他把手提箱留在站台上，坐到最远的那条长椅上，开始写那封他一辈子都不知道该寄给谁的信。"}
+],
+patterns:[
+{sent:"la absoluta certeza de que el tren, de algún modo insondable, lo habría esperado",analysis:"【la certeza de que + 从句】= 对……的确信，是名词 certeza 后接 de que 引导的同位语从句，这是C1书面语中名词化结构的典型用法。insondable（深不可测的，难以探知的）是文学语体中的高级形容词。habría esperado 是条件式完成时（Condicional Compuesto），表示过去对未来的推测。",formula:"la certeza de que + 从句 = 对……的绝对确信"},
+{sent:"con la serenidad de quien ha llegado, por fin, a un lugar que siempre supo que no existía",analysis:"【con la serenidad de quien...】= 带着……人所特有的那种平静，是C1高级比较状语结构。quien 在此作关系代词引导定语从句，修饰前面的 quien（= una persona que）。siempre supo 用陈述式过去时表达角色的主观确信，隐含悖论：确信某个不存在的地方，是典型的魔幻现实主义手法。",formula:"con la + 名词 + de quien + 从句 = 带着……人所特有的那种……"}
+]}
+];
+
+// ══════════════════════════════════════════════
+// 状态 & 初始化
+// ══════════════════════════════════════════════
+var vocab=[];
+try{vocab=JSON.parse(localStorage.getItem('es_vocab')||'[]');}catch(e){vocab=[];}
+var currentCat='all',currentArticle=null,showChinese=false,pressTimer=null;
+
+(function init(){
+  var d=new Date();
+  document.getElementById('todayDate').textContent=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日';
+  document.getElementById('articleCountBadge').textContent=ARTICLES.length+'篇文章';
+  document.getElementById('tabRead').addEventListener('click',function(){switchTab('read');});
+  document.getElementById('tabVocab').addEventListener('click',function(){switchTab('vocab');});
+  document.getElementById('refreshBtn').addEventListener('click',function(){showToast('已是最新文章！');});
+  document.getElementById('overlay').addEventListener('click',function(e){if(e.target===document.getElementById('overlay'))closePopup();});
+  document.getElementById('vocabSearch').addEventListener('input',renderVocab);
+  document.querySelectorAll('.cat').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      currentCat=btn.getAttribute('data-cat');
+      document.querySelectorAll('.cat').forEach(function(b){b.classList.remove('on');});
+      btn.classList.add('on');renderList();
+    });
+  });
+  renderList();updateVocabBadge();
+})();
+
+function switchTab(t){
+  document.getElementById('panelRead').style.display=t==='read'?'':'none';
+  document.getElementById('panelVocab').style.display=t==='vocab'?'':'none';
+  document.getElementById('tabRead').className='tab'+(t==='read'?' on':'');
+  document.getElementById('tabVocab').className='tab'+(t==='vocab'?' on':'');
+  if(t==='vocab')renderVocab();
+}
+
+function renderList(){
+  var list=document.getElementById('articleList'),reader=document.getElementById('articleReader');
+  reader.style.display='none';list.style.display='';list.innerHTML='';
+  ARTICLES.filter(function(a){return currentCat==='all'||a.category===currentCat;}).forEach(function(a){
+    var card=document.createElement('div');card.className='acard';
+    card.innerHTML='<div class="acard-meta"><span class="ctag" style="background:'+a.catColor+'">'+a.catLabel+'</span><span class="ltag">'+a.level+'</span></div>'+
+      '<h3>'+a.title+'</h3><div class="sub">'+a.subtitle+'</div>'+
+      '<div class="news-badge">&#128240; '+a.source+'</div>'+
+      '<div class="prev">'+a.content[0].es+'</div>';
+    (function(aid){card.addEventListener('click',function(){openArticle(aid);});})(a.id);
+    list.appendChild(card);
+  });
+}
+
+function openArticle(id){
+  for(var i=0;i<ARTICLES.length;i++){if(ARTICLES[i].id===id){currentArticle=ARTICLES[i];break;}}
+  if(!currentArticle)return;
+  showChinese=false;
+  document.getElementById('articleList').style.display='none';
+  var reader=document.getElementById('articleReader');
+  reader.style.display='';reader.innerHTML='';
+  var hd=document.createElement('div');hd.className='rhd';
+  var back=document.createElement('button');back.className='back';back.textContent='← 返回文章列表';
+  back.addEventListener('click',backToList);hd.appendChild(back);
+  var h2=document.createElement('h2');h2.textContent=currentArticle.title;hd.appendChild(h2);
+  var s2=document.createElement('div');s2.className='sub2';s2.textContent=currentArticle.subtitle+' ['+currentArticle.level+']';hd.appendChild(s2);
+  var st=document.createElement('div');st.className='srctag';st.textContent='来源：'+currentArticle.source;hd.appendChild(st);
+  var ctrls=document.createElement('div');ctrls.className='ctrls';
+  var zhBtn=document.createElement('button');zhBtn.className='ctrl';zhBtn.id='zhToggle';zhBtn.textContent='显示中文翻译';
+  zhBtn.addEventListener('click',toggleChinese);ctrls.appendChild(zhBtn);hd.appendChild(ctrls);reader.appendChild(hd);
+  var hint=document.createElement('p');hint.className='hint';hint.textContent='长按任意单词 → 查询释义 → 加入词库';reader.appendChild(hint);
+  var sw=document.createElement('div');sw.className='sentences';
+  currentArticle.content.forEach(function(s,i){
+    var block=document.createElement('div');block.className='sblock';
+    var num=document.createElement('div');num.className='snum';num.textContent='第'+(i+1)+'句';block.appendChild(num);
+    var esDiv=document.createElement('div');esDiv.className='est';buildSpans(s,esDiv);block.appendChild(esDiv);
+    var zhDiv=document.createElement('div');zhDiv.className='zht';zhDiv.id='zh_'+s.id;zhDiv.style.display='none';zhDiv.textContent=s.zh;block.appendChild(zhDiv);
+    sw.appendChild(block);
+  });
+  reader.appendChild(sw);
+  var pw=document.createElement('div');pw.className='pats';
+  var ptitle=document.createElement('div');ptitle.className='pt';ptitle.textContent='重点句型 & 语法分析';pw.appendChild(ptitle);
+  currentArticle.patterns.forEach(function(p){
+    var item=document.createElement('div');item.className='pi';
+    var ps=document.createElement('div');ps.className='ps';ps.textContent=p.sent;item.appendChild(ps);
+    var pa=document.createElement('div');pa.className='pa';pa.textContent=p.analysis;item.appendChild(pa);
+    var pf=document.createElement('div');pf.className='pf';pf.textContent=p.formula;item.appendChild(pf);
+    pw.appendChild(item);
+  });
+  reader.appendChild(pw);
+}
+
+function buildSpans(sentence,container){
+  sentence.es.split(/(\s+)/).forEach(function(tok){
+    if(/^\s+$/.test(tok)){container.appendChild(document.createTextNode(tok));return;}
+    var clean=tok.replace(/[.,!?;:()¡¿«»—\u2014]/g,'');
+    if(clean.length<2){container.appendChild(document.createTextNode(tok));return;}
+    var span=document.createElement('span');span.className='word';span.textContent=tok;
+    var cw=clean.toLowerCase(),cs=sentence;
+    function onStart(){span.classList.add('pressing');clearTimeout(pressTimer);
+      pressTimer=setTimeout(function(){span.classList.remove('pressing');showWordPopup(cw,cs);},500);}
+    function onEnd(){clearTimeout(pressTimer);span.classList.remove('pressing');}
+    span.addEventListener('mousedown',onStart);span.addEventListener('mouseup',onEnd);
+    span.addEventListener('mouseleave',onEnd);span.addEventListener('touchstart',onStart,{passive:true});
+    span.addEventListener('touchend',onEnd);span.addEventListener('touchcancel',onEnd);
+    container.appendChild(span);
+  });
+}
+
+function backToList(){document.getElementById('articleReader').style.display='none';document.getElementById('articleList').style.display='';}
+function toggleChinese(){
+  showChinese=!showChinese;
+  document.querySelectorAll('[id^="zh_"]').forEach(function(el){el.style.display=showChinese?'':'none';});
+  var btn=document.getElementById('zhToggle');if(btn){btn.textContent=showChinese?'隐藏中文翻译':'显示中文翻译';btn.className=showChinese?'ctrl on':'ctrl';}
+}
+
+function showWordPopup(word,sentence){
+  openPopup();
+  var entry=lookupWord(word);
+  var body=document.getElementById('popupBody');
+  var ctxHtml='<div class="pctx"><div style="font-size:11px;color:var(--muted);font-weight:800;margin-bottom:4px">出处原句</div><div class="es">'+sentence.es+'</div><div class="zh">'+sentence.zh+'</div></div>';
+  if(!entry){
+    body.innerHTML='<div class="pw">'+word+'</div><div class="pty">西班牙语词汇</div><div class="pm" style="color:var(--muted);font-size:15px">词典暂未收录此词</div>'+ctxHtml+'<div class="pacts"><button class="addbtn" id="addWordBtn">加入词库</button><button class="clsbtn" id="closeBtn">关闭</button></div>';
+    document.getElementById('addWordBtn').addEventListener('click',function(){doAdd(word,'—','—',sentence);});
+    document.getElementById('closeBtn').addEventListener('click',closePopup);
+    return;
+  }
+  var exHtml=entry.e?'<div class="pctx alt"><div style="font-size:11px;color:var(--muted);font-weight:800;margin-bottom:4px">例句</div><div class="es">'+entry.e+'</div><div class="zh">'+entry.ez+'</div></div>':'';
+  body.innerHTML='<div class="pw">'+word+'</div><div class="pty">'+entry.t+'</div><div class="pm">'+entry.z+'</div>'+ctxHtml+exHtml+'<div class="pacts"><button class="addbtn" id="addWordBtn">加入词库</button><button class="clsbtn" id="closeBtn">关闭</button></div>';
+  var ce=entry,cw=word,cs=sentence;
+  document.getElementById('addWordBtn').addEventListener('click',function(){doAdd(cw,ce.t,ce.z,cs);});
+  document.getElementById('closeBtn').addEventListener('click',closePopup);
+}
+
+function openPopup(){document.getElementById('overlay').classList.add('show');}
+function closePopup(){document.getElementById('overlay').classList.remove('show');}
+
+function doAdd(word,type,zh,sentence){
+  for(var i=0;i<vocab.length;i++){if(vocab[i].word===word){showToast('"'+word+'" 已在词库中');closePopup();return;}}
+  vocab.unshift({word:word,type:type,chinese:zh,sentence:sentence?sentence.es:'',sentenceZh:sentence?sentence.zh:'',addedAt:new Date().toLocaleDateString('zh-CN')});
+  try{localStorage.setItem('es_vocab',JSON.stringify(vocab));}catch(e){}
+  updateVocabBadge();showToast('"'+word+'" 已加入词库！');closePopup();
+}
+
+function updateVocabBadge(){
+  document.getElementById('tabVocab').textContent=vocab.length>0?'词库 ('+vocab.length+')':'词库';
+  var c=document.getElementById('vocabCount');if(c)c.textContent=vocab.length+' 个单词';
+}
+
+function renderVocab(){
+  var q=(document.getElementById('vocabSearch').value||'').toLowerCase();
+  var c=document.getElementById('vocabCount');if(c)c.textContent=vocab.length+' 个单词';
+  var filtered=vocab.filter(function(v){return v.word.toLowerCase().indexOf(q)>-1||v.chinese.indexOf(q)>-1;});
+  var list=document.getElementById('vocabList');
+  if(!filtered.length){list.innerHTML='<div class="empty"><div class="eico">'+(vocab.length?'🔍':'📚')+'</div><p>'+(vocab.length?'没有匹配的单词':'词库还是空的<br>去阅读文章，长按单词加入词库！')+'</p></div>';return;}
+  list.innerHTML='';
+  filtered.forEach(function(v){
+    var card=document.createElement('div');card.className='vcard';
+    var sentHtml=v.sentence?'<div class="vsnt"><div class="es">'+v.sentence+'</div><div class="zh">'+v.sentenceZh+'</div></div>':'';
+    card.innerHTML='<div class="vrow"><div><div class="vw">'+v.word+'</div><div class="vt">'+v.type+'</div></div><button class="vdel">×</button></div><div class="vmn">'+v.chinese+'</div>'+sentHtml+'<div class="vdt">加入时间：'+v.addedAt+'</div>';
+    var cw=v.word;card.querySelector('.vdel').addEventListener('click',function(){removeVocab(cw);});
+    list.appendChild(card);
+  });
+}
+
+function removeVocab(word){
+  vocab=vocab.filter(function(v){return v.word!==word;});
+  try{localStorage.setItem('es_vocab',JSON.stringify(vocab));}catch(e){}
+  updateVocabBadge();renderVocab();showToast('已移除 "'+word+'"');
+}
+
+var toastTimer=null;
+function showToast(msg){
+  var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';
+  clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.style.display='none';},2600);
+}
+</script>
+</body>
+</html>
+HTMLEOF
+echo "done"
