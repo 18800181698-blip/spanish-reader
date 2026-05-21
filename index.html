@@ -102,13 +102,13 @@ body{background:var(--bg);font-family:system-ui,-apple-system,sans-serif;color:v
       <div>
         <div class="bf">&#127466;&#127480;</div>
         <div class="bt">MiLector Español</div>
-        <div class="bs">每日西语精读 · B2-C1 · 实时新闻</div>
+        <div class="bs">每日西语精读 · B2-C1 · 实时更新</div>
       </div>
     </div>
     <div class="ds">
       <span class="bdg bg">&#128197; 2026年5月21日</span>
       <span class="bdg bgh">&#127919; B2-C1</span>
-      <span class="bdg bgh">&#128196; 6篇文章</span>
+      <span class="bdg bgh">&#128196; 0篇文章</span>
     </div>
   </div>
 </div>
@@ -121,9 +121,9 @@ body{background:var(--bg);font-family:system-ui,-apple-system,sans-serif;color:v
     <button class="cat on" data-cat="all">全部</button>
     <button class="cat" data-cat="news">&#127758; 新闻</button>
     <button class="cat" data-cat="science">&#128300; 科普</button>
-    <button class="cat" data-cat="football">&#9917; 足球</button>
-    <button class="cat" data-cat="cinema">&#127916; 电影</button>
+    <button class="cat" data-cat="cinema">&#127916; 影评</button>
     <button class="cat" data-cat="entertainment">&#127881; 娱乐</button>
+    <button class="cat" data-cat="literature">&#128213; 文学</button>
   </div>
   <div class="list" id="articleList"></div>
   <div id="articleReader" style="display:none"></div>
@@ -143,9 +143,10 @@ body{background:var(--bg);font-family:system-ui,-apple-system,sans-serif;color:v
 </div>
 <div class="toast" id="toast"></div>
 <script>
-var ARTICLES=[{"id":1,"category":"news","level":"B2","catLabel":"新闻","catColor":"#2980B9","source":"El País","url":"https://elpais.com/espana/2026-05-21/el-pp-anuncia-una-ofensiva-total-en-la-comision-de-la-sepi-en-el-senado-por-el-caso-plus-ultra-y-cita-al-exministro-escriva.html","title":"El PP anuncia una “ofensiva total” en la comisión de la SEPI en el Senado por el ‘caso Plus Ultra’ y cita al exministro Escrivá","subtitle":"这 PP anuncia una “ofensiva total” 在 这 comisión 的 这 SEPI 在 这 Senado 因为 这 ‘案例 Plus Ultra’ 和 cita 到 exministro Escrivá","content":[{"id":"a1s0","es":"El PP anuncia una “ofensiva total” en la comisión de la SEPI en el Senado por el ‘caso Plus Ultra’ y cita al exministro Escrivá.","zh":"这 PP anuncia una “ofensiva total” 在 这 comisión 的 这 SEPI 在 这 Senado 因为 这 ‘案例 Plus Ultra’ 和 cita 到 exministro Escrivá."},{"id":"a1s1","es":"Los populares también llaman a declarar a la secretaria de Zapatero, a la mano derecha de Julio Martínez y a Manuel Aaron Fajardo, “el hombre del expresidente en Venezuela”.","zh":"这些 populares 也 llaman a declarar a 这 secretaria 的 Zapatero, a 这 mano derecha 的 Julio Martínez 和 a Manuel Aaron Fajardo, “这 hombre 的 expresidente 在 Venezuela”."},{"id":"a1s2","es":"Los populares también llaman a declarar a la secretaria de Zapatero, a la mano derecha de Julio Martínez y a Manuel Aaron Fajardo, “el hombre del expresidente en Venezuela”","zh":"这些 populares 也 llaman a declarar a 这 secretaria 的 Zapatero, a 这 mano derecha 的 Julio Martínez 和 a Manuel Aaron Fajardo, “这 hombre 的 expresidente 在 Venezuela”"}],"patterns":[{"sent":"Según los expertos, la situación podría mejorar en los próximos meses","analysis":"【según + 名词】= 根据……，据……，是引用消息来源的标准新闻句型。podría + infinitivo 是条件式（Condicional Simple），表示可能性推测，比直接陈述语气更谨慎客观。","formula":"según + 消息来源 = 据……，根据……"}]},{"id":2,"category":"news","level":"B2","catLabel":"新闻","catColor":"#2980B9","source":"El País","url":"https://elpais.com/espana/2026-05-21/pnv-y-junts-dejan-la-legislatura-pendiente-de-la-declaracion-judicial-de-zapatero.html","title":"PNV y Junts dejan la legislatura pendiente de la declaración judicial de Zapatero","subtitle":"PNV 和 Junts dejan 这 legislatura pendiente 的 这 declaración judicial 的 Zapatero","content":[{"id":"a2s0","es":"PNV y Junts dejan la legislatura pendiente de la declaración judicial de Zapatero.","zh":"PNV 和 Junts dejan 这 legislatura pendiente 的 这 declaración judicial 的 Zapatero."},{"id":"a2s1","es":"ERC y otros socios modulan su respaldo y fijan su línea roja en que el PSOE no resulte implicado.","zh":"ERC 和 otros socios modulan su respaldo 和 fijan su línea roja 在 的 这 PSOE 不 resulte implicado."},{"id":"a2s2","es":"ERC y otros socios modulan su respaldo y fijan su línea roja en que el PSOE no resulte implicado","zh":"ERC 和 otros socios modulan su respaldo 和 fijan su línea roja 在 的 这 PSOE 不 resulte implicado"}],"patterns":[{"sent":"Según los expertos, la situación podría mejorar en los próximos meses","analysis":"【según + 名词】= 根据……，据……，是引用消息来源的标准新闻句型。podría + infinitivo 是条件式（Condicional Simple），表示可能性推测，比直接陈述语气更谨慎客观。","formula":"según + 消息来源 = 据……，根据……"}]},{"id":3,"category":"football","level":"B2","catLabel":"足球","catColor":"#27AE60","source":"Marca","url":"https://www.marca.com/futbol/sevilla/2026/05/21/garcia-plaza-prepara-visita-celta-cinco-bajas-entrenamiento.html","title":"García Plaza prepara la visita al Celta con cinco bajas en el entrenamiento","subtitle":"García Plaza prepara 这 visita 到 Celta 和 cinco bajas 在 这 entrenamiento","content":[{"id":"a3s0","es":"García Plaza prepara la visita al Celta con cinco bajas en el entrenamiento.","zh":"García Plaza prepara 这 visita 到 Celta 和 cinco bajas 在 这 entrenamiento."},{"id":"a3s1","es":"Sin Januzaj, Mendy, Nianzou y Castrín, pero con Nico Guillén listo para debutar&nbsp; Leer.","zh":"Sin Januzaj, Mendy, Nianzou 和 Castrín, 但是 和 Nico Guillén listo para debutar&nbsp; Leer."},{"id":"a3s2","es":"Sin Januzaj, Mendy, Nianzou y Castrín, pero con Nico Guillén listo para debutar&nbsp; Leer","zh":"Sin Januzaj, Mendy, Nianzou 和 Castrín, 但是 和 Nico Guillén listo para debutar&nbsp; Leer"}],"patterns":[{"sent":"El delantero marcó un doblete que resultó decisivo para la clasificación del equipo","analysis":"【marcar un doblete】= 打进两球，是足球报道专用词组。que resultó decisivo 是关系从句，resultar + 形容词 = 结果是……，证明是……，比 ser 更强调结果性。","formula":"resultar + 形容词 = 结果是……，证明是……"}]},{"id":4,"category":"football","level":"B2","catLabel":"足球","catColor":"#27AE60","source":"Marca","url":"https://www.marca.com/futbol/sevilla/2026/05/21/venta-sevilla-congela-movimientos-mercado.html","title":"La venta del Sevilla congela los movimientos en el mercado","subtitle":"这 venta 的 Sevilla congela 这些 movimientos 在 这 市场","content":[{"id":"a4s0","es":"La venta del Sevilla congela los movimientos en el mercado.","zh":"这 venta 的 Sevilla congela 这些 movimientos 在 这 市场."},{"id":"a4s1","es":"Los compradores buscan inversores a contrarreloj para acometer la operación&nbsp; Leer.","zh":"这些 compradores buscan inversores a contrarreloj para acometer 这 operación&nbsp; Leer."},{"id":"a4s2","es":"Los compradores buscan inversores a contrarreloj para acometer la operación&nbsp; Leer","zh":"这些 compradores buscan inversores a contrarreloj para acometer 这 operación&nbsp; Leer"}],"patterns":[{"sent":"El equipo remontó un marcador adverso gracias a la determinación de sus jugadores","analysis":"【remontar】= 逆转，反超，是体育语境中的核心动词。gracias a（多亏了）引导原因状语，语义积极，与 a causa de（由于，消极）形成对比，是B2必须区分的介词短语。","formula":"gracias a + 名词 = 多亏了……，得益于……"}]},{"id":5,"category":"football","level":"B2","catLabel":"足球","catColor":"#27AE60","source":"Mundo Deportivo","url":"https://www.mundodeportivo.com/futbol/athletic-bilbao/20260521/1004185979/valverde-desea-suerte-terzic-cambio-venir.html","title":"Valverde desea suerte a Terzic: &quot;Un cambio puede venir bien&quot;","subtitle":"Valverde desea suerte a Terzic: &quot;一个 变化 可以 venir bien&quot;","content":[{"id":"a5s0","es":"Valverde desea suerte a Terzic: &quot;Un cambio puede venir bien&quot;.","zh":"Valverde desea suerte a Terzic: &quot;一个 变化 可以 venir bien&quot;."},{"id":"a5s1","es":"El Athletic cambia de ciclo la temporada próxima. &lt;b&gt;Valverde &lt;/b&gt;dice agur el sábado a la noche, después de jugar el último partido en el Santiago Bernabéu, y &lt;b&gt;Edin Terzic &lt;/b&gt;coge su relevo.","zh":"这 Athletic cambia 的 ciclo 这 temporada próxima. &lt;b&gt;Valverde &lt;/b&gt;dice agur 这 sábado a 这 noche, 之后 的 jugar 这 最后 比赛 在 这 Santiago Bernabéu, 和 &lt;b&gt;Edin Terzic &lt;/b&gt;coge su relevo."},{"id":"a5s2","es":"El nombre del alemán ha salido hoy en la última rueda de prensa que ha ofrecido el todavía entrenador rojiblanco en Lezama.&amp;nbsp;.","zh":"这 nombre 的 alemán 已 salido hoy 在 这 最后 rueda 的 prensa 的 已 ofrecido 这 todavía 教练 rojiblanco 在 Lezama.&amp;nbsp;."},{"id":"a5s3","es":"El Athletic cambia de ciclo la temporada próxima. &lt;b&gt;Valverde &lt;/b&gt;dice agur el sábado a la noche, después de jugar el último partido en el Santiago Bernabéu, y &lt;b&gt;Edin Terzic &lt;/b&gt;coge su relevo.","zh":"这 Athletic cambia 的 ciclo 这 temporada próxima. &lt;b&gt;Valverde &lt;/b&gt;dice agur 这 sábado a 这 noche, 之后 的 jugar 这 最后 比赛 在 这 Santiago Bernabéu, 和 &lt;b&gt;Edin Terzic &lt;/b&gt;coge su relevo."},{"id":"a5s4","es":"El nombre del alemán ha salido hoy en la última rueda de prensa que ha ofrecido el todavía entrenador rojiblanco en Lezama.&amp;nbsp;","zh":"这 nombre 的 alemán 已 salido hoy 在 这 最后 rueda 的 prensa 的 已 ofrecido 这 todavía 教练 rojiblanco 在 Lezama.&amp;nbsp;"}],"patterns":[{"sent":"El delantero marcó un doblete que resultó decisivo para la clasificación del equipo","analysis":"【marcar un doblete】= 打进两球，是足球报道专用词组。que resultó decisivo 是关系从句，resultar + 形容词 = 结果是……，证明是……，比 ser 更强调结果性。","formula":"resultar + 形容词 = 结果是……，证明是……"}]},{"id":6,"category":"football","level":"B2","catLabel":"足球","catColor":"#27AE60","source":"Mundo Deportivo","url":"https://www.mundodeportivo.com/futbol/elche-cf/20260521/1004186084/400-aficionados-acompanaran-elche-girona-partido-alto-riesgo.html","title":"Más de 400 aficionados acompañarán al Elche en Girona en un partido de alto riesgo","subtitle":"更多 的 400 aficionados acompañarán 到 Elche 在 Girona 在 一个 比赛 的 alto riesgo","content":[{"id":"a6s0","es":"Más de 400 aficionados acompañarán al Elche en Girona en un partido de alto riesgo. &lt;b&gt;Más de 400 aficionados del Elche acompañarán este sábado al equipo ilicitano en Girona&lt;/b&gt;, donde el conjunto ilicitano afrontará en Montilivi un partido decisivo en la lucha por la permanencia, en un encuentro declarado de alto riesgo.. &lt;b&gt;Más de 400 aficionados del Elche acompañarán este sábado al equipo ilicitano en Girona&lt;/b&gt;, donde el conjunto ilicitano afrontará en Montilivi un partido decisivo en la lucha por la permanencia, en un encuentro declarado de alto riesgo.","zh":"更多 的 400 aficionados acompañarán 到 Elche 在 Girona 在 一个 比赛 的 alto riesgo. &lt;b&gt;更多 的 400 aficionados 的 Elche acompañarán este sábado 到 球队 ilicitano 在 Girona&lt;/b&gt;, 在哪里 这 conjunto ilicitano afrontará 在 Montilivi 一个 比赛 decisivo 在 这 lucha 因为 这 permanencia, 在 一个 encuentro declarado 的 alto riesgo.. &lt;b&gt;更多 的 400 aficionados 的 Elche acompañarán este sábado 到 球队 ilicitano 在 Girona&lt;/b&gt;, 在哪里 这 conjunto ilicitano afrontará 在 Montilivi 一个 比赛 decisivo 在 这 lucha 因为 这 permanencia, 在 一个 encuentro declarado 的 alto riesgo."},{"id":"a6s1","es":"Más de 400 aficionados acompañarán al Elche en Girona en un partido de alto riesgo. &lt;b&gt;Más de 400 aficionados del Elche acompañarán este sábado al equipo ilicitano en Girona&lt;/b&gt;, donde el conjunto ilicitano afrontará en Montilivi un partido decisivo en la lucha por la permanencia, en un encuentro declarado de alto riesgo.. &lt;b&gt;Más de 400 aficionados del Elche acompañarán este sábado al equipo ilicitano en Girona&lt;/b&gt;, donde el conjunto ilicitano afrontará en Montilivi un partido decisivo en la lucha por la permanencia, en un encuentro declarado de alto riesgo.","zh":"更多 的 400 aficionados acompañarán 到 Elche 在 Girona 在 一个 比赛 的 alto riesgo. &lt;b&gt;更多 的 400 aficionados 的 Elche acompañarán este sábado 到 球队 ilicitano 在 Girona&lt;/b&gt;, 在哪里 这 conjunto ilicitano afrontará 在 Montilivi 一个 比赛 decisivo 在 这 lucha 因为 这 permanencia, 在 一个 encuentro declarado 的 alto riesgo.. &lt;b&gt;更多 的 400 aficionados 的 Elche acompañarán este sábado 到 球队 ilicitano 在 Girona&lt;/b&gt;, 在哪里 这 conjunto ilicitano afrontará 在 Montilivi 一个 比赛 decisivo 在 这 lucha 因为 这 permanencia, 在 一个 encuentro declarado 的 alto riesgo."},{"id":"a6s2","es":"Más de 400 aficionados acompañarán al Elche en Girona en un partido de alto riesgo. &lt;b&gt;Más de 400 aficionados del Elche acompañarán este sábado al equipo ilicitano en Girona&lt;/b&gt;, donde el conjunto ilicitano afrontará en Montilivi un partido decisivo en la lucha por la permanencia, en un encuentro declarado de alto riesgo.. &lt;b&gt;Más de 400 aficionados del Elche acompañarán este sábado al equipo ilicitano en Girona&lt;/b&gt;, donde el conjunto ilicitano afrontará en Montilivi un partido decisivo en la lucha por la permanencia, en un encuentro declarado de alto riesgo.","zh":"更多 的 400 aficionados acompañarán 到 Elche 在 Girona 在 一个 比赛 的 alto riesgo. &lt;b&gt;更多 的 400 aficionados 的 Elche acompañarán este sábado 到 球队 ilicitano 在 Girona&lt;/b&gt;, 在哪里 这 conjunto ilicitano afrontará 在 Montilivi 一个 比赛 decisivo 在 这 lucha 因为 这 permanencia, 在 一个 encuentro declarado 的 alto riesgo.. &lt;b&gt;更多 的 400 aficionados 的 Elche acompañarán este sábado 到 球队 ilicitano 在 Girona&lt;/b&gt;, 在哪里 这 conjunto ilicitano afrontará 在 Montilivi 一个 比赛 decisivo 在 这 lucha 因为 这 permanencia, 在 一个 encuentro declarado 的 alto riesgo."}],"patterns":[{"sent":"El equipo remontó un marcador adverso gracias a la determinación de sus jugadores","analysis":"【remontar】= 逆转，反超，是体育语境中的核心动词。gracias a（多亏了）引导原因状语，语义积极，与 a causa de（由于，消极）形成对比，是B2必须区分的介词短语。","formula":"gracias a + 名词 = 多亏了……，得益于……"}]}];
+var ARTICLES=[];
+var VOCAB_KEY='milector_vocab_v2';
 var vocab=[];
-try{vocab=JSON.parse(localStorage.getItem('es_vocab')||'[]');}catch(e){vocab=[];}
+try{vocab=JSON.parse(localStorage.getItem(VOCAB_KEY)||'[]');}catch(e){vocab=[];}
 var currentCat='all',currentArticle=null,showChinese=false,pressTimer=null;
 (function(){
   document.getElementById('tabRead').addEventListener('click',function(){switchTab('read');});
@@ -176,7 +177,7 @@ function renderList(){
     card.innerHTML='<div class="acard-meta"><span class="ctag" style="background:'+a.catColor+'">'+a.catLabel+'</span><span class="ltag">'+a.level+'</span></div>'+
       '<h3>'+a.title+'</h3><div class="sub">'+a.subtitle+'</div>'+
       '<div class="src">&#128240; '+a.source+'</div>'+
-      '<div class="prev">'+a.content[0].es+'</div>';
+      '<div class="prev">'+(a.content[0]?a.content[0].es:'')+'</div>';
     (function(aid){card.addEventListener('click',function(){openArticle(aid);});})(a.id);
     list.appendChild(card);
   });
@@ -207,16 +208,19 @@ function openArticle(id){
     sw.appendChild(block);
   });
   reader.appendChild(sw);
-  var pw=document.createElement('div');pw.className='pats';
-  var ptitle=document.createElement('div');ptitle.className='pt';ptitle.textContent='重点句型 & 语法分析';pw.appendChild(ptitle);
-  currentArticle.patterns.forEach(function(p){
-    var item=document.createElement('div');item.className='pi';
-    var ps=document.createElement('div');ps.className='ps';ps.textContent=p.sent;item.appendChild(ps);
-    var pa=document.createElement('div');pa.className='pa';pa.textContent=p.analysis;item.appendChild(pa);
-    var pf=document.createElement('div');pf.className='pf';pf.textContent=p.formula;item.appendChild(pf);
-    pw.appendChild(item);
-  });
-  reader.appendChild(pw);
+  if(currentArticle.patterns&&currentArticle.patterns[0]&&currentArticle.patterns[0].sent){
+    var pw=document.createElement('div');pw.className='pats';
+    var ptitle=document.createElement('div');ptitle.className='pt';ptitle.textContent='重点句型 & 语法分析';pw.appendChild(ptitle);
+    currentArticle.patterns.forEach(function(p){
+      if(!p.sent)return;
+      var item=document.createElement('div');item.className='pi';
+      var ps=document.createElement('div');ps.className='ps';ps.textContent=p.sent;item.appendChild(ps);
+      var pa=document.createElement('div');pa.className='pa';pa.textContent=p.analysis;item.appendChild(pa);
+      var pf=document.createElement('div');pf.className='pf';pf.textContent=p.formula;item.appendChild(pf);
+      pw.appendChild(item);
+    });
+    reader.appendChild(pw);
+  }
 }
 function buildSpans(sentence,container){
   sentence.es.split(/(\s+)/).forEach(function(tok){
@@ -251,11 +255,11 @@ function showWordPopup(word,sentence){
 }
 function openPopup(){document.getElementById('overlay').classList.add('show');}
 function closePopup(){document.getElementById('overlay').classList.remove('show');}
+function saveVocab(){try{localStorage.setItem(VOCAB_KEY,JSON.stringify(vocab));}catch(e){}}
 function doAdd(word,type,zh,sentence){
   for(var i=0;i<vocab.length;i++){if(vocab[i].word===word){showToast('"'+word+'" 已在词库中');closePopup();return;}}
   vocab.unshift({word:word,type:type,chinese:zh,sentence:sentence?sentence.es:'',sentenceZh:sentence?sentence.zh:'',addedAt:new Date().toLocaleDateString('zh-CN')});
-  try{localStorage.setItem('es_vocab',JSON.stringify(vocab));}catch(e){}
-  updateVocabBadge();showToast('"'+word+'" 已加入词库！');closePopup();
+  saveVocab();updateVocabBadge();showToast('"'+word+'" 已加入词库！');closePopup();
 }
 function updateVocabBadge(){
   document.getElementById('tabVocab').textContent=vocab.length>0?'词库 ('+vocab.length+')':'词库';
@@ -278,8 +282,7 @@ function renderVocab(){
 }
 function removeVocab(word){
   vocab=vocab.filter(function(v){return v.word!==word;});
-  try{localStorage.setItem('es_vocab',JSON.stringify(vocab));}catch(e){}
-  updateVocabBadge();renderVocab();showToast('已移除 "'+word+'"');
+  saveVocab();updateVocabBadge();renderVocab();showToast('已移除 "'+word+'"');
 }
 var toastTimer=null;
 function showToast(msg){
