@@ -12,11 +12,11 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install requests
-      - run: python update.py
-                env:
+      - name: Run update script
+        run: python update.py
+        env:
           NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-
       - run: |
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
